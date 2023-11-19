@@ -13,7 +13,7 @@ public class Movimiento : MonoBehaviour
     [SerializeField] AXIS rotationAxis;
     [Header("Velocidad de rotación:")]
     [SerializeField] float spinAngle;
-
+    float timeAngle = 0f;
     Mesh carMesh;
     Mesh[] wheelMeshes = new Mesh[4];
     Vector3[] carBaseVertices;
@@ -34,13 +34,21 @@ public class Movimiento : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             Vector3 wheelPosition;
-            if (i % 2 == 0)
+            if (i == 0)
             {
-                wheelPosition = new Vector3(displacement.x * (i - 1), 0, -displacement.z / 2f);
+                wheelPosition = new Vector3(1.0f , 0.3f, -1.0f);
+            }
+            else if (i == 1)
+            {
+                wheelPosition = new Vector3(-1.0f, 0.3f, -1.0f);
+            }
+            else if (i == 2)
+            {
+                wheelPosition = new Vector3(1.0f, 0.3f, 1.5f);
             }
             else
             {
-                wheelPosition = new Vector3(displacement.x * Mathf.Sign(i - 2), 0, displacement.z / 2f);
+                wheelPosition = new Vector3(-1.0f, 0.3f, 1.5f);
             }
 
             wheels[i] = Instantiate(llanta, wheelPosition, llanta.transform.rotation);
@@ -54,6 +62,7 @@ public class Movimiento : MonoBehaviour
     void Update()
     {
         DoTransform();
+        DoPath();
     }
 
     void DoTransform()
@@ -62,7 +71,7 @@ public class Movimiento : MonoBehaviour
                                                       displacement.y * Time.time,
                                                       displacement.z * Time.time);
 
-        Matrix4x4 rotate = HW_Transforms.RotateMat(angle * Time.time, rotationAxis);
+        Matrix4x4 rotate = HW_Transforms.RotateMat(angle , rotationAxis);
 
         Matrix4x4 composite = move * rotate;
 
@@ -100,6 +109,35 @@ public class Movimiento : MonoBehaviour
 
             wheelMeshes[i].vertices = wheelNewVertices[i];
             wheelMeshes[i].RecalculateNormals();
+        }
+    }
+
+    void DoPath(){
+        float currentTime = Time.time;
+        if (currentTime - timeAngle >= 10f){
+            timeAngle = currentTime;
+            switch(angle){
+                case 0:
+                    angle = 90;
+                    displacement.x = displacement.z;
+                    displacement.z = 0;
+                    break;
+                case 90:
+                    angle = 180;
+                    displacement.z = -displacement.x;
+                    displacement.x = 0;
+                    break;
+                case 180:
+                    angle = 270;
+                    displacement.x = displacement.z;
+                    displacement.z = 0;
+                    break;
+                case 270:
+                    angle = 360;
+                    displacement.z = -displacement.x;
+                    displacement.x = 0;
+                    break;
+            }
         }
     }
 }
