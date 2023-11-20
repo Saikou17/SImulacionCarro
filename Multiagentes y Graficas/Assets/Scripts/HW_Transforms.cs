@@ -1,10 +1,3 @@
-/*
-Functions to work with transformation matrices in 3D
-
-Gilberto Echeverria
-2022-11-03
-*/
-
 
 using System.Collections;
 using System.Collections.Generic;
