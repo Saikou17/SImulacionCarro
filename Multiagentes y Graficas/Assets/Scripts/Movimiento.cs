@@ -62,7 +62,7 @@ public class Movimiento : MonoBehaviour
                 wheelPosition = new Vector3(-1.0f, 0.3f, 1.5f);
             }
             //Instanciamos las llantas con su modelo, posicion y rotacion
-            wheels[i] = Instantiate(llanta, wheelPosition, llanta.transform.rotation);
+            wheels[i] = Instantiate(llanta, wheelPosition, Quaternion.identity);
             //Guardamos las mallas de cada una de las ruedas
             wheelMeshes[i] = wheels[i].GetComponentInChildren<MeshFilter>().mesh;
             //Guardamos los vertices originales de cada una de las ruedas
@@ -78,9 +78,12 @@ public class Movimiento : MonoBehaviour
 
     void Update()
     {
+        // //Calculamos el angulo con respecto a los ejes x y z
+        // angle = Mathf.Atan2(displacement.z, displacement.x) * Mathf.Rad2Deg;
         //Llamamos la funcion para actualizar el movimiento del carro y de las ruedas cada frame
         DoTransform();
     }
+
 
     //Funcion de movimiento
     void DoTransform()
@@ -123,7 +126,7 @@ public class Movimiento : MonoBehaviour
             Matrix4x4 spin = HW_Transforms.RotateMat(spinAngle * Time.time,
                                                      AXIS.X);
             //Creamos el movimiento y rotacion de las ruedas con respecto al carro
-            Matrix4x4 compositeWheel = moveWheel * composite * spin;
+            Matrix4x4 compositeWheel = composite * moveWheel * spin;
 
             //Recorremos los vertices por cada de nuestras ruedas
             for (int j = 0; j < wheelNewVertices[i].Length; j++)
