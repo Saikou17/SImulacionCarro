@@ -79,7 +79,7 @@ public class Movimiento : MonoBehaviour
     void Update()
     {
         // //Calculamos el angulo con respecto a los ejes x y z
-        // angle = Mathf.Atan2(displacement.z, displacement.x) * Mathf.Rad2Deg;
+        angle = Mathf.Atan2(displacement.x, displacement.z) * Mathf.Rad2Deg;
         //Llamamos la funcion para actualizar el movimiento del carro y de las ruedas cada frame
         DoTransform();
     }
