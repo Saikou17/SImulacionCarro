@@ -354,7 +354,6 @@
 -analyzer:"D:/jp/2022.3.12f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/HW_Transforms.cs"
 "Assets/Scripts/Movimiento.cs"
-"Assets/Scripts/Movimiento2.cs"
 -langversion:9.0
 
 /deterministic

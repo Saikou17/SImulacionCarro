@@ -24,8 +24,9 @@ public class Movimiento : MonoBehaviour
     //Creamos y guardamos los elementos de las ruedas
     GameObject[] wheels = new GameObject[4];
     Mesh[] wheelMeshes = new Mesh[4];
+    Vector3[] wheelPositions = new Vector3[4];
     Vector3[][] wheelBaseVertices = new Vector3[4][];
-    Vector3[][] wheelNewVertices = new Vector3[4][];
+    Vector3[][] wheelNewVertices = new Vector3[4][];    
 
     void Start()
     {   
@@ -47,22 +48,26 @@ public class Movimiento : MonoBehaviour
             Vector3 wheelPosition;
             if (i == 0)
             {
-                wheelPosition = new Vector3(1.0f , 0.3f, -1.0f);
+                wheelPosition = new Vector3(2.0f , 0.4f, -2.0f);
+                wheelPositions[i] = wheelPosition;
             }
             else if (i == 1)
             {
-                wheelPosition = new Vector3(-1.0f, 0.3f, -1.0f);
+                wheelPosition = new Vector3(-2.0f, 0.4f, -2.0f);
+                wheelPositions[i] = wheelPosition;
             }
             else if (i == 2)
             {
-                wheelPosition = new Vector3(1.0f, 0.3f, 1.5f);
+                wheelPosition = new Vector3(2.0f, 0.4f, 3.0f);
+                wheelPositions[i] = wheelPosition;
             }
             else
             {
-                wheelPosition = new Vector3(-1.0f, 0.3f, 1.5f);
+                wheelPosition = new Vector3(-2.0f, 0.4f, 3.0f);
+                wheelPositions[i] = wheelPosition;
             }
             //Instanciamos las llantas con su modelo, posicion y rotacion
-            wheels[i] = Instantiate(llanta, wheelPosition, Quaternion.identity);
+            wheels[i] = Instantiate(llanta, new Vector3(0,0,0), Quaternion.identity);
             //Guardamos las mallas de cada una de las ruedas
             wheelMeshes[i] = wheels[i].GetComponentInChildren<MeshFilter>().mesh;
             //Guardamos los vertices originales de cada una de las ruedas
@@ -119,9 +124,9 @@ public class Movimiento : MonoBehaviour
         for (int i = 0; i < wheels.Length; i++)
         {
             //Guardamos la posicion de nuestras ruedas
-            Matrix4x4 moveWheel = HW_Transforms.TranslationMat(wheels[i].transform.position.x,
-                                                               wheels[i].transform.position.y,
-                                                               wheels[i].transform.position.z);
+            Matrix4x4 moveWheel = HW_Transforms.TranslationMat(wheelPositions[i].x ,
+                                                               wheelPositions[i].y ,
+                                                               wheelPositions[i].z);
             //Guardamos la rotacion de las ruedas
             Matrix4x4 spin = HW_Transforms.RotateMat(spinAngle * Time.time,
                                                      AXIS.X);
